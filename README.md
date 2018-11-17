@@ -39,3 +39,19 @@ For more advanced use, you can add various options
 to `options.json`, such as the default runtime
 parameters or the location for Cromwell logs.
 For details, please see [Workflow Options](https://cromwell.readthedocs.io/en/stable/wf_options/Overview/).
+
+## After the workshop
+
+You can apply the *initial* setup described above
+to any other Google project on your own.
+
+However, in order to *submit* the workflows in
+another project, your Google email or group
+needs to be **whitelisted** in FireCloud.
+
+Additionally, to access data in *Epigenomics production buckets*,
+your service account will need to be whitelisted for
+those buckets.
+
+Please contact Wintergreen team (David and Denis)
+for assistance with these steps.
