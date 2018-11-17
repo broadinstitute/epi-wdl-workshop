@@ -17,6 +17,13 @@ enable_api() {
 enable_api compute
 enable_api genomics
 
+### Create Cromwell executions bucket if it doesn't exist
+
+BUCKET=${3:-"${PROJECT}-cromwell-executions"}
+REGION=${4:-"us-east1"}
+
+gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
+
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
 # Create SA if it doesn't exist
@@ -68,10 +75,3 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 ./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
 rm "${KEY_FILE}"
-
-### Create Cromwell executions bucket if it doesn't exist
-
-BUCKET=${3:-"${PROJECT}-cromwell-executions"}
-REGION=${4:-"us-east1"}
-
-gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
