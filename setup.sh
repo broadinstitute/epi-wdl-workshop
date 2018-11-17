@@ -2,7 +2,11 @@
 
 set -e
 
-PROJECT=$1
+get_project() {
+  gcloud config list --format 'value(core.project)'
+}
+
+PROJECT=${1:-"$(get_project)"}
 
 user_name() {
   gcloud config list --format 'value(core.account.split("@").slice(0))'
