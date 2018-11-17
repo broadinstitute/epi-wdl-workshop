@@ -40,6 +40,16 @@ to `options.json`, such as the default runtime
 parameters or the location for Cromwell logs.
 For details, please see [Workflow Options](https://cromwell.readthedocs.io/en/stable/wf_options/Overview/).
 
+## Monitor workflows
+
+Cromwell team provides a nice UI for *monitoring* your workflows.
+Please navigate to [Job Manager](https://job-manager.caas-prod.broadinstitute.org/)
+and log in with your Broad account.
+
+**Note**: some browsers and/or their extensions may prohibit
+certain cookies on many websites. You will have to *disable*
+such plugins for this site.
+
 ## After the workshop
 
 You can apply the *initial* setup described above
