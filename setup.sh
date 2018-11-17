@@ -39,7 +39,7 @@ SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
   --display-name "${SERVICE_ACCOUNT}" 2>/dev/null || true
 
-# Add roles required by CaaS
+# Add roles and permissions required by Cromwell
 
 add_role() {
   gcloud projects add-iam-policy-binding "${PROJECT}" \
@@ -49,9 +49,14 @@ add_role() {
 
 add_role compute.instanceAdmin.v1
 add_role genomics.pipelinesRunner
-add_role iam.serviceAccountUser
-add_role serviceusage.serviceUsageConsumer
 add_role storage.objectAdmin
+
+PROJECT_ID=$(gcloud projects describe "${PROJECT}" --format 'value(projectNumber)')
+
+gcloud iam service-accounts add-iam-policy-binding \
+  "${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --member "serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
+  --role "roles/iam.serviceAccountUser" >/dev/null
 
 # (Re-)generate the key and populate it into options.json
 
