@@ -23,6 +23,9 @@ This will create **`options.json`** file, which contains
 your **credentials** for submission of workflows to WDL execution service (Cromwell).
 *Please keep this file in a secure place!*
 
+If at any point you lost `options.json` or just want to
+re-create it, just re-run step 2.
+
 ## Submit a workflow
 
 ```

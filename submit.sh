@@ -4,7 +4,6 @@ OPTIONS="$1"
 SOURCE="$2"
 INPUTS="$3"
 
-
 CROMWELL="cromwell.caas-prod.broadinstitute.org"
 
 curl "https://${CROMWELL}/api/workflows/v1" \
