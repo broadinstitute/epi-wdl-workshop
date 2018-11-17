@@ -2,7 +2,7 @@
 
 set -e
 
-export PROJECT=$1
+PROJECT=$1
 
 user_name() {
   gcloud config list --format 'value(core.account.split("@").slice(0))'
@@ -23,7 +23,7 @@ enable_api genomics
 
 ### Create Cromwell executions bucket if it doesn't exist
 
-export BUCKET=${3:-"${PROJECT}-cromwell-executions"}
+BUCKET=${3:-"${PROJECT}-cromwell-executions"}
 REGION=${4:-"us-east1"}
 
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
@@ -34,14 +34,8 @@ gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
 
 SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 
-get_account() {
-  gcloud iam service-accounts describe "$1" 2>/dev/null
-}
-
-if [ -z "$(get_account ${SERVICE_ACCOUNT_EMAIL})" ]; then
-  gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
-    --display-name "${SERVICE_ACCOUNT}"
-fi
+gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
+  --display-name "${SERVICE_ACCOUNT}" 2>/dev/null || true
 
 # Add roles
 
@@ -66,12 +60,12 @@ get_keys() {
     --format 'value(name)'
 }
 
-for key_id in $(get_keys); do
+for key_id in $(get_keys "${SERVICE_ACCOUNT_EMAIL}"); do
   gcloud iam service-accounts keys delete "${key_id}" \
-    --iam-account "${SERVICE_ACCOUNT_EMAIL}"
+    --iam-account "${SERVICE_ACCOUNT_EMAIL}" -q
 done
 
-export KEY_FILE="key.json"
+KEY_FILE="key.json"
 
 gcloud iam service-accounts keys create "${KEY_FILE}" \
   --iam-account "${SERVICE_ACCOUNT_EMAIL}"
