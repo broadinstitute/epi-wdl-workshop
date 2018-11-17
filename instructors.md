@@ -12,3 +12,6 @@ in preparation for the workshop.
     for submission of workflows to CaaS.
 6)  Create bucket `broad-epi-wdl-workshop-data`.
 7)  Copy example data into the bucket.
+8)  Enable Google Container Registry API in the project.
+9)  Pull GCR Docker images from `broad-epigenomics` project
+    and push them to `broad-epi-wdl-workshop` project.
