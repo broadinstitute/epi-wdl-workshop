@@ -1,0 +1,28 @@
+{
+  "Alignment.dockerImage": "us.gcr.io/broad-epi-wdl-workshop/alignment-tools",
+  "Alignment.referenceUri": "gs://broad-epi-wdl-workshop-data/genomes/hg19/hg19",
+  "Alignment.laneSubsets": [
+    {
+      "name": "Lane Subset 27204",
+      "libraryName": "DNA_Lib 9781",
+      "fastqs": [
+        "gs://broad-epi-wdl-workshop-data/reads/CoPA_15234_L1_R1.fastq.gz"
+      ],
+      "sequencingCenter": "BI",
+      "description": "ChIP-Seq analysis of X Epitope in Human Y cells",
+      "sampleName": "BioSam 2870",
+      "runDate": "2018-11-13T00:00:00"
+    },
+    {
+      "name": "Lane Subset 27213",
+      "libraryName": "DNA_Lib 9781",
+      "fastqs": [
+        "gs://broad-epi-wdl-workshop-data/reads/CoPA_15234_L2_R1.fastq.gz"
+      ],
+      "sequencingCenter": "BI",
+      "description": "ChIP-Seq analysis of X Epitope in Human Y cells",
+      "sampleName": "BioSam 2870",
+      "runDate": "2018-11-13T00:00:00"
+    }
+  ]
+}
