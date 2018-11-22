@@ -9,9 +9,9 @@ key_file = argv[3]
 
 OPTIONS_FILE = 'options.json'
 
-DEFAULT_CPU = 2
-DEFAULT_MEMORY = '2G'
-DEFAULT_DISK = 'local-disk 25 HDD'
+JES_GCS_ROOT = 'gs://' + bucket + '/workflows'
+MONITORING_SCRIPT = 'gs://' + bucket + '/scripts/monitoring.sh'
+DEFAULT_DISK = 'local-disk 10 HDD'
 ZONES = [
   'us-east1-b', 'us-east1-c', 'us-east1-d',
   'us-central1-a', 'us-central1-b', 'us-central1-c', 'us-central1-f',
@@ -27,11 +27,10 @@ def main():
   with open(OPTIONS_FILE, 'w') as out:
     options = {
       'google_project': project,
-      'jes_gcs_root': 'gs://' + bucket,
       'user_service_account_json': key,
+      'jes_gcs_root': JES_GCS_ROOT,
+      'monitoring_script': MONITORING_SCRIPT,
       'default_runtime_attributes': {
-        'cpu': DEFAULT_CPU,
-        'memory': DEFAULT_MEMORY,
         'disks': DEFAULT_DISK,
         'zones': ZONES,
         'preemptible': MAX_PREEMPTIBLE,

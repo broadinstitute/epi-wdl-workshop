@@ -299,6 +299,7 @@ task SortBam {
     String dockerImage
   }
 
+  Int diskSize = ceil(2.5 * size(bam, 'G') + 1)
   String outBamName = 'out.bam'
 
   command <<<
@@ -307,6 +308,7 @@ task SortBam {
 
   runtime {
     docker: dockerImage
+    disks: 'local-disk ~{diskSize} HDD'
   }
 
   output {
@@ -330,6 +332,7 @@ task MarkDuplicates {
     String dockerImage
   }
 
+  Int diskSize = ceil(2.5 * size(bam, 'G') + 1)
   String outBamName = 'out.bam'
 
   command <<<
@@ -346,6 +349,7 @@ task MarkDuplicates {
 
   runtime {
       docker: dockerImage
+      disks: 'local-disk ~{diskSize} HDD'
       memory: '4G'
   }
 
@@ -371,6 +375,7 @@ task IndexBam {
     String dockerImage
   }
 
+  Int diskSize = ceil(1.25 * size(bam, 'G') + 1)
   String baiName = 'out.bai'
 
   command <<<
@@ -379,6 +384,7 @@ task IndexBam {
 
   runtime {
     docker: dockerImage
+    disks: 'local-disk ~{diskSize} HDD'
   }
 
   output {
@@ -405,6 +411,7 @@ task CollectMetrics {
 
   Int memory = 4
   Int javaMemory = ceil((memory - 0.5) * 1000)
+  Int diskSize = ceil(1.25 * size([bam, fasta], 'G') + 1)
 
   command <<<
     java -Xmx~{javaMemory}m -jar /opt/picard.jar \
@@ -422,6 +429,7 @@ task CollectMetrics {
 
   runtime {
     docker: dockerImage
+    disks: 'local-disk ~{diskSize} HDD'
     memory: memory + 'G'
   }
 
