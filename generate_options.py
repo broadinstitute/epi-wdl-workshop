@@ -32,7 +32,7 @@ def main():
       'user_service_account_json': key,
       'jes_gcs_root': JES_GCS_ROOT,
       'monitoring_script': MONITORING_SCRIPT,
-      'final_call_logs_dir': LOGS_DIR,
+      'final_workflow_log_dir': LOGS_DIR,
       'default_runtime_attributes': {
         'disks': DEFAULT_DISK,
         'zones': ZONES,

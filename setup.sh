@@ -19,7 +19,7 @@ enable_api genomics
 
 ### Create Cromwell executions bucket if it doesn't exist
 
-BUCKET=${3:-"${PROJECT}-cromwell-executions"}
+BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
 
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
