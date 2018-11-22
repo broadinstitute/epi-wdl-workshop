@@ -11,6 +11,8 @@ OPTIONS_FILE = 'options.json'
 
 JES_GCS_ROOT = 'gs://' + bucket + '/workflows'
 MONITORING_SCRIPT = 'gs://' + bucket + '/scripts/monitoring.sh'
+LOGS_DIR = 'gs://' + bucket + '/logs'
+
 DEFAULT_DISK = 'local-disk 10 HDD'
 ZONES = [
   'us-east1-b', 'us-east1-c', 'us-east1-d',
@@ -30,6 +32,7 @@ def main():
       'user_service_account_json': key,
       'jes_gcs_root': JES_GCS_ROOT,
       'monitoring_script': MONITORING_SCRIPT,
+      'final_call_logs_dir': LOGS_DIR,
       'default_runtime_attributes': {
         'disks': DEFAULT_DISK,
         'zones': ZONES,
