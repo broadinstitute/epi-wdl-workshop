@@ -81,3 +81,10 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 ./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
 rm "${KEY_FILE}"
+
+### Register user email in Sam/FireCloud (if not yet registered)
+
+SAM="sam.dsde-prod.broadinstitute.org"
+
+curl -X POST "https://${SAM}/register/user/v1" \
+   -H "Authorization: Bearer $(gcloud auth print-access-token)" 2>/dev/null
