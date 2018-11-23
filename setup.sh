@@ -86,5 +86,5 @@ rm "${KEY_FILE}"
 
 SAM="sam.dsde-prod.broadinstitute.org"
 
-curl -X POST "https://${SAM}/register/user/v1" \
-   -H "Authorization: Bearer $(gcloud auth print-access-token)" 2>/dev/null
+curl -sX POST "https://${SAM}/register/user/v1" \
+   -H "Authorization: Bearer $(gcloud auth print-access-token)" >/dev/null

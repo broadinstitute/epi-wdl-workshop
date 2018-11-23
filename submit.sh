@@ -6,7 +6,7 @@ INPUTS="$3"
 
 CROMWELL="cromwell.caas-prod.broadinstitute.org"
 
-curl "https://${CROMWELL}/api/workflows/v1" \
+curl -s "https://${CROMWELL}/api/workflows/v1" \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
     -F workflowOptions=@"${OPTIONS}" \
     -F workflowSource=@"${SOURCE}" \
