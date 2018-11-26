@@ -38,8 +38,8 @@ run_gsutil() {
   fi
 }
 
-run_gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
-run_gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
+# run_gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
+# run_gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
