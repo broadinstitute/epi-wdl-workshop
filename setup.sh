@@ -5,7 +5,7 @@ set -e
 ### Set up Google project
 
 run_gcloud() {
-  if type "gcloud.cmd" 2>/dev/null; then
+  if type "gcloud.cmd" &>/dev/null; then
     gcloud.cmd "$@"
   else
     gcloud "$@"
@@ -31,7 +31,7 @@ BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
 
 run_gsutil() {
-  if type "gsutil.cmd" 2>/dev/null; then
+  if type "gsutil.cmd" &>/dev/null; then
     gsutil.cmd "$@"
   else
     gsutil "$@"
