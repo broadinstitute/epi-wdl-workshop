@@ -4,22 +4,20 @@ set -e
 
 ### Set up Google project
 
-run_gcloud() {
-  if type "gcloud.cmd" &>/dev/null; then
-    gcloud.cmd "$@"
-  else
-    gcloud "$@"
-  fi
-}
+if type "gcloud.cmd" &>/dev/null; then
+  export GCLOUD="gcloud.cmd"
+else
+  export GCLOUD="gcloud"
+fi
 
 get_project() {
-  run_gcloud config list --format 'value(core.project)'
+  $GCLOUD config list --format 'value(core.project)'
 }
 
 PROJECT=${1:-"$(get_project)"}
 
 enable_api() {
-  run_gcloud services enable "$1"
+  $GCLOUD services enable "$1"
 }
 
 enable_api compute
@@ -30,36 +28,34 @@ enable_api genomics
 BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
 
-run_gsutil() {
-  if type "gsutil.cmd" &>/dev/null; then
-    gsutil.cmd "$@"
-  else
-    gsutil "$@"
-  fi
-}
+if type "gsutil.cmd" &>/dev/null; then
+  export GSUTIL="gsutil.cmd"
+else
+  export GSUTIL="gsutil"
+fi
 
-run_gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
-run_gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
+$GSUTIL mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
+$GSUTIL cp monitoring.sh "gs://${BUCKET}/scripts/"
 
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
 # Create SA if it doesn't exist
 
 username() {
-  run_gcloud config list --format 'value(core.account.split("@").slice(0))'
+  $GCLOUD config list --format 'value(core.account.split("@").slice(0))'
 }
 
 SERVICE_ACCOUNT=${2:-"cromwell-$(username)"}
 
 SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 
-run_gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
+$GCLOUD iam service-accounts create "${SERVICE_ACCOUNT}" \
   --display-name "${SERVICE_ACCOUNT}" 2>/dev/null || true
 
 # Add roles and permissions required by Cromwell
 
 add_role() {
-  run_gcloud projects add-iam-policy-binding "${PROJECT}" \
+  $GCLOUD projects add-iam-policy-binding "${PROJECT}" \
     --member "serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
     --role "roles/$1" >/dev/null
 }
@@ -68,9 +64,9 @@ add_role compute.instanceAdmin.v1
 add_role genomics.pipelinesRunner
 add_role storage.objectAdmin
 
-PROJECT_ID=$(run_gcloud projects describe "${PROJECT}" --format 'value(projectNumber)')
+PROJECT_ID=$($GCLOUD projects describe "${PROJECT}" --format 'value(projectNumber)')
 
-run_gcloud iam service-accounts add-iam-policy-binding \
+$GCLOUD iam service-accounts add-iam-policy-binding \
   "${PROJECT_ID}-compute@developer.gserviceaccount.com" \
   --member "serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
   --role "roles/iam.serviceAccountUser" >/dev/null
@@ -78,20 +74,20 @@ run_gcloud iam service-accounts add-iam-policy-binding \
 # (Re-)generate the key and populate it into options.json
 
 get_keys() {
-  run_gcloud iam service-accounts keys list \
+  $GCLOUD iam service-accounts keys list \
     --iam-account "$1" \
     --managed-by user \
     --format 'value(name)'
 }
 
 for key_id in $(get_keys "${SERVICE_ACCOUNT_EMAIL}"); do
-  run_gcloud iam service-accounts keys delete "${key_id}" \
+  $GCLOUD iam service-accounts keys delete "${key_id}" \
     --iam-account "${SERVICE_ACCOUNT_EMAIL}" -q
 done
 
 KEY_FILE="key.json"
 
-run_gcloud iam service-accounts keys create "${KEY_FILE}" \
+$GCLOUD iam service-accounts keys create "${KEY_FILE}" \
   --iam-account "${SERVICE_ACCOUNT_EMAIL}"
 
 ./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
@@ -103,4 +99,4 @@ rm "${KEY_FILE}"
 SAM="sam.dsde-prod.broadinstitute.org"
 
 curl -sX POST "https://${SAM}/register/user/v1" \
-   -H "Authorization: Bearer $(run_gcloud auth print-access-token)" >/dev/null
+   -H "Authorization: Bearer $($GCLOUD auth print-access-token)" >/dev/null
