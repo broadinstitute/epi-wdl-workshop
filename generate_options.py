@@ -9,6 +9,8 @@ key_file = argv[3]
 
 OPTIONS_FILE = 'options.json'
 
+BACKEND = 'PAPIv2'
+
 JES_GCS_ROOT = 'gs://' + bucket + '/workflows'
 MONITORING_SCRIPT = 'gs://' + bucket + '/scripts/monitoring.sh'
 LOGS_DIR = 'gs://' + bucket + '/logs'
@@ -28,6 +30,7 @@ def main():
 
   with open(OPTIONS_FILE, 'w') as out:
     options = {
+      'backend': BACKEND,
       'google_project': project,
       'user_service_account_json': key,
       'jes_gcs_root': JES_GCS_ROOT,
