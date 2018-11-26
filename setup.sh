@@ -7,7 +7,7 @@ set -e
 export PATH="${PATH}:${LOCALAPPDATA}/Google/Cloud SDK/google-cloud-sdk/bin"
 
 run_gcloud() {
-  if [ -x "$(command -v gcloud.cmd)" ]; then
+  if $(command -v gcloud.cmd); then
     gcloud.cmd $@
   else
     gcloud $@
@@ -33,7 +33,7 @@ BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
 
 run_gsutil() {
-  if [ -x "$(command -v gsutil.cmd)" ]; then
+  if $(command -v gsutil.cmd); then
     gsutil.cmd $@
   else
     gsutil $@
