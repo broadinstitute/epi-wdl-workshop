@@ -4,7 +4,7 @@ set -e
 
 ### Set up Google project
 
-export PATH="${PATH}:${LOCALAPPDATA}/Google/Cloud SDK/google-cloud-sdk/bin"
+export PATH="${PATH}:${LOCALAPPDATA}/Google/Cloud\ SDK/google-cloud-sdk/bin"
 
 run_gcloud() {
   if $(command -v gcloud.cmd); then
