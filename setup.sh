@@ -4,6 +4,8 @@ set -e
 
 ### Set up Google project
 
+export PATH="${PATH}:${LOCALAPPDATA}/Google/Cloud SDK/google-cloud-sdk/bin"
+
 get_project() {
   gcloud config list --format 'value(core.project)'
 }
