@@ -22,8 +22,12 @@ enable_api genomics
 BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
 
-gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
-gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
+run_gsutil() {
+  gsutil $@ || gsutil.cmd $@
+}
+
+run_gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
+run_gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
