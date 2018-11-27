@@ -2,7 +2,11 @@ version: 2
 jobs:
   build:
     machine: true
+    filters:
+      branches:
+        only:
+        - dev
     steps:
-      - checkout
-      - run: |
-          docker build -t ${REPO_URL} .
+    - checkout
+    - run: |
+        docker build -t ${REPO_URL} .
