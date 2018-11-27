@@ -9,7 +9,13 @@ own Google cloud projects.
 
 ## Setup
 
-Please install [Docker](https://docs.docker.com/install/#supported-platforms) for your operating system.
+Please install Docker for
+[Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe),
+[Mac](https://download.docker.com/mac/stable/Docker.dmg),
+or your favorite
+[Linux](https://docs.docker.com/install/#supported-platforms) distribution
+(unfortunately, the official links for **Windows** and **Mac** on that page
+require registration, so don't use them 😉).
 
 ## Submit a workflow
 
