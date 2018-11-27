@@ -7,38 +7,55 @@ We will show how to use them during the Broad Epigenomics WDL workshop.
 After that, attendees will be able to run other workflows in their
 own Google cloud projects.
 
-## Initial setup
+## Setup
 
-We will pre-create a demo project to run example workflows.
-After the workshop, you can create a separate project
-and run the same script to set it up.
-
-1)  Install [Google Cloud SDK](https://cloud.google.com/sdk/).
-
-    During the setup, please select `broad-epi-wdl-workshop` project.
-
-2)  Clone this repo and run `./setup.sh` in its directory
-
-This will create **`options.json`** file, which contains
-your **credentials** for submission of workflows to WDL execution service (Cromwell).
-*Please keep this file in a secure place!*
-
-If at any point you lost `options.json` or just want to
-re-create it, just re-run step 2.
+Please install [Docker](https://docs.docker.com/install/#supported-platforms) for your operating system.
 
 ## Submit a workflow
 
+Please open command line and run
 ```
-./submit.sh options.json workflow.wdl inputs.json
+docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow quay.io/broadinstitute/epi-cromwell \
+  broad-epi-wdl-workshop /example/Alignment.wdl /example/alignment.inputs.json
 ```
-Here, `workflow.wdl` and `inputs.json` are the files
-containing your WDL and its inputs
-(we will explain the syntax during the workshop).
+Here, `broad-epi-wdl-workshop` is the name of the Google cloud project
+for the workshop. Please change it to your own project when you
+start submitting your own workflows.
 
-For more advanced use, you can add various options
-to `options.json`, such as the default runtime
-parameters or the location for Cromwell logs.
-For details, please see [Workflow Options](https://cromwell.readthedocs.io/en/stable/wf_options/Overview/).
+`/example/Alignment.wdl` and `/example/alignment.inputs.json`
+are the paths to the WDL and workflow inputs inside the Docker
+container.
+
+While technically not required for the examples,
+`-v $PWD:/workflow` says that you're mounting the
+current working directory into `/workflow` directory
+inside the container. That way, you will be able to submit
+your future workflows as follows:
+```
+docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow quay.io/broadinstitute/epi-cromwell \
+  your-google-project-id workflow.wdl inputs.json
+```
+where `workflow.wdl` and `inputs.json` are your own
+WDL file and its inputs, located in the current
+working directory on the command line.
+
+*Note:* If you're running this command **on Windows command line**,
+please replace `$PWD` with `%cd%`.
+
+The command from above will initially prompt you to
+authenticate on Google cloud. Please copy-paste the
+link from the terminal into your browser, follow the
+on-screen prompts, and then copy-paste the resulting
+code back into the terminal and hit Enter.
+
+Once this is done, the command will remember your
+credentials for any future workflows, so you
+will not have to re-authenticate again.
+
+Any subsequent command invocations should take
+only a couple seconds, unless you start working on
+a new project, in which case it will
+re-run a short setup script first.
 
 ## Monitor workflows
 
