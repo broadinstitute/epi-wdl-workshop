@@ -21,9 +21,10 @@ enable_api genomics
 
 BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
+SCRIPTS=$(dirname "$0")
 
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
-gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
+gsutil cp "${SCRIPTS}/monitoring.sh" "gs://${BUCKET}/scripts/"
 
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
@@ -78,7 +79,7 @@ KEY_FILE="key.json"
 gcloud iam service-accounts keys create "${KEY_FILE}" \
   --iam-account "${SERVICE_ACCOUNT_EMAIL}"
 
-./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
+"${SCRIPTS}/generate_options.py" "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
 rm "${KEY_FILE}"
 
