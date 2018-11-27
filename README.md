@@ -14,7 +14,7 @@ Please install Docker for
 [Mac](https://download.docker.com/mac/stable/Docker.dmg),
 or your favorite
 [Linux](https://docs.docker.com/install/#supported-platforms) distribution
-(unfortunately, the official links for **Windows** and **Mac** on that page
+(unfortunately, the official links for **Windows** and **Mac** on that last page
 require registration, so don't use them 😉).
 
 ## Submit a workflow
