@@ -24,6 +24,11 @@ Please open command line and run
 docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broadinstitute/epi-cromwell \
   broad-epi-wdl-workshop /example/Alignment.wdl /example/alignment.inputs.json
 ```
+*Note:* If you're running this command **on Windows command line**,
+please replace `$PWD` with `%cd%` and remove `\` at the end.
+You will also have to copy and paste each of the above 2 lines
+into the same command line.
+
 Here, `broad-epi-wdl-workshop` is the name of the Google cloud project
 for the workshop. Please change it to your own project when you
 start submitting your own workflows.
@@ -45,9 +50,6 @@ docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broad
 where `workflow.wdl` and `inputs.json` are your own
 WDL file and its inputs, located in the current
 working directory on the command line.
-
-*Note:* If you're running this command **on Windows command line**,
-please replace `$PWD` with `%cd%`.
 
 The command from above will initially prompt you to
 authenticate on Google cloud. Please copy-paste the
