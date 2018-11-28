@@ -3,5 +3,7 @@
 SOURCE="$1"
 INPUTS="$2"
 
-java -jar "$(dirname "$0")/womtool.jar" \
+SCRIPTS_DIR=$(dirname "$0")
+
+java -jar "${SCRIPTS_DIR}/womtool.jar" \
   validate "${SOURCE}" -i "${INPUTS}"

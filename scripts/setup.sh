@@ -2,13 +2,13 @@
 
 set -e
 
+### Remember the working directory and switch to the scripts directory
+
+pushd $(dirname "$0") >/dev/null
+
 ### Set up Google project
 
-get_project() {
-  gcloud config list --format 'value(core.project)'
-}
-
-PROJECT=${1:-"$(get_project)"}
+PROJECT=$1
 
 enable_api() {
   gcloud services enable "$1"
@@ -21,10 +21,9 @@ enable_api genomics
 
 BUCKET=${3:-"${PROJECT}-cromwell"}
 REGION=${4:-"us-east1"}
-SCRIPTS=$(dirname "$0")
 
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
-gsutil cp "${SCRIPTS}/monitoring.sh" "gs://${BUCKET}/scripts/"
+gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 
 ### Generate Cromwell Pet Service Account with the necessary roles and a key
 
@@ -79,7 +78,7 @@ KEY_FILE="key.json"
 gcloud iam service-accounts keys create "${KEY_FILE}" \
   --iam-account "${SERVICE_ACCOUNT_EMAIL}"
 
-"${SCRIPTS}/generate_options.py" "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
+./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
 rm "${KEY_FILE}"
 
@@ -89,3 +88,7 @@ SAM="sam.dsde-prod.broadinstitute.org"
 
 curl -sX POST "https://${SAM}/register/user/v1" \
    -H "Authorization: Bearer $(gcloud auth print-access-token)" >/dev/null
+
+### Return to the working directory
+
+popd >/dev/null

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 PROJECT="$1"
 WDL="$2"
 INPUTS="$3"
@@ -35,14 +37,12 @@ if [ "$(get_project)" != "${PROJECT}" ]; then
 fi
 
 OPTIONS="${CLOUDSDK_CONFIG}/options-${PROJECT}.json"
-SCRIPTS=$(dirname "$0")
+SCRIPTS_DIR=$(dirname "$0")
 
 if [ ! -f "${OPTIONS}" ]; then
-  pushd "${SCRIPTS}" >/dev/null
-  ./setup.sh
-  mv options.json "${OPTIONS}"
-  popd >/dev/null
+  "${SCRIPTS_DIR}/setup.sh" "${PROJECT}"
+  mv "${SCRIPTS_DIR}/options.json" "${OPTIONS}"
 fi
 
-"${SCRIPTS}/validate.sh" "${WDL}" "${INPUTS}"
-"${SCRIPTS}/submit.sh" "${OPTIONS}" "${WDL}" "${INPUTS}"
+"${SCRIPTS_DIR}/validate.sh" "${WDL}" "${INPUTS}"
+"${SCRIPTS_DIR}/submit.sh" "${OPTIONS}" "${WDL}" "${INPUTS}"
