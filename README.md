@@ -17,6 +17,10 @@ or your favorite
 (unfortunately, the official links for **Windows** and **Mac** on that last page
 require registration, so don't use them 😉).
 
+*Note:* that Windows link only works for Windows 10 Pro & above.
+If you have Windows 7 or Window 10 Home, you will have to install
+[Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) instead.
+
 ## Submit a workflow
 
 Please open command line and run
@@ -26,18 +30,18 @@ docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broad
 ```
 *Note:* If you're running this command **on Windows command line**,
 please replace `$PWD` with `%cd%` and remove `\` at the end.
-You will also have to copy and paste each of the above 2 lines
-into the same command line.
+You will also have to copy and paste each of the above lines
+into the same line.
 
 Here, `broad-epi-wdl-workshop` is the name of the Google cloud project
 for the workshop. Please change it to your own project when you
 start submitting your own workflows.
 
 `/example/Alignment.wdl` and `/example/alignment.inputs.json`
-are the paths to the WDL and workflow inputs inside the Docker
+are the paths to the WDL and workflow inputs *inside* the Docker
 container.
 
-While technically not required for the examples,
+While technically not required for the example,
 `-v $PWD:/workflow:ro` says that you're mounting the
 current working directory into `/workflow` directory
 inside the container in read-only mode.
@@ -66,6 +70,13 @@ only a couple seconds, unless you start working on
 a new project, in which case it will
 re-run a short setup script first.
 
+Addionally, this Docker image will be periodically
+updated, so we encourage you to run
+```
+docker pull quay.io/broadinstitute/epi-cromwell
+```
+from time to time.
+
 ## Monitor workflows
 
 Cromwell team provides a nice UI for *monitoring* your workflows.
@@ -89,5 +100,6 @@ Additionally, to access data in *Epigenomics production buckets*,
 your service account will need to be whitelisted for
 those buckets.
 
-Please contact Wintergreen team (David and Denis)
+Please [register on FireCloud](https://software.broadinstitute.org/firecloud/documentation/article?id=6816),
+and then contact [Wintergreen team](mailto:wintergreen@broadinstitute.org) (David and Denis)
 for assistance with these steps.
