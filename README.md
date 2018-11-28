@@ -14,10 +14,10 @@ Please install Docker for
 [Mac](https://download.docker.com/mac/stable/Docker.dmg),
 or your favorite
 [Linux](https://docs.docker.com/install/#supported-platforms) distribution
-(unfortunately, the official links for **Windows** and **Mac** on that last page
+(unfortunately, the official links for *Windows* and *Mac* on that last page
 require registration, so don't use them 😉).
 
-*Note:* that Windows link only works for Windows 10 Pro & above.
+*Note:* that Windows link only works for **Windows 10 Pro & above**.
 If you have Windows 7 or Window 10 Home, you will have to install
 [Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) instead.
 
