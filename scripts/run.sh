@@ -40,9 +40,9 @@ OPTIONS="${CLOUDSDK_CONFIG}/options-${PROJECT}.json"
 SCRIPTS_DIR=$(dirname "$0")
 
 if [ ! -f "${OPTIONS}" ]; then
-  "${SCRIPTS_DIR}/setup.sh" "${PROJECT}"
+  "${SCRIPTS_DIR}/setup.sh" "${PROJECT}" "${GCS_REGION}" "${SAM_HOST}"
   mv "${SCRIPTS_DIR}/options.json" "${OPTIONS}"
 fi
 
 "${SCRIPTS_DIR}/validate.sh" "${WDL}" "${INPUTS}"
-"${SCRIPTS_DIR}/submit.sh" "${OPTIONS}" "${WDL}" "${INPUTS}"
+"${SCRIPTS_DIR}/submit.sh" "${CROMWELL_HOST}" "${OPTIONS}" "${WDL}" "${INPUTS}"

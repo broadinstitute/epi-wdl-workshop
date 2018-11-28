@@ -9,6 +9,8 @@ pushd $(dirname "$0") >/dev/null
 ### Set up Google project
 
 PROJECT=$1
+REGION=$2
+SAM=$3
 
 enable_api() {
   gcloud services enable "$1"
@@ -19,8 +21,7 @@ enable_api genomics
 
 ### Create Cromwell executions bucket if it doesn't exist
 
-BUCKET=${3:-"${PROJECT}-cromwell"}
-REGION=${4:-"us-east1"}
+BUCKET="${PROJECT}-cromwell"
 
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
 gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
@@ -33,7 +34,7 @@ username() {
   gcloud config list --format 'value(core.account.split("@").slice(0))'
 }
 
-SERVICE_ACCOUNT=${2:-"cromwell-$(username)"}
+SERVICE_ACCOUNT="cromwell-$(username)"
 
 SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 
@@ -83,8 +84,6 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 rm "${KEY_FILE}"
 
 ### Register user email in Sam/FireCloud (if not yet registered)
-
-SAM="sam.dsde-prod.broadinstitute.org"
 
 curl -sX POST "https://${SAM}/register/user/v1" \
    -H "Authorization: Bearer $(gcloud auth print-access-token)" >/dev/null

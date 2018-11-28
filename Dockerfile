@@ -32,4 +32,8 @@ FROM build as final
 
 WORKDIR /workflow
 
+ENV CROMWELL_HOST="cromwell.caas-prod.broadinstitute.org" \
+    SAM_HOST="sam.dsde-prod.broadinstitute.org" \
+    GCS_REGION="us-east1"
+
 ENTRYPOINT ["/scripts/run.sh"]

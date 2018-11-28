@@ -1,10 +1,9 @@
 #!/usr/bin/env sh
 
-OPTIONS="$1"
-SOURCE="$2"
-INPUTS="$3"
-
-CROMWELL="cromwell.caas-prod.broadinstitute.org"
+CROMWELL="$1"
+OPTIONS="$2"
+SOURCE="$3"
+INPUTS="$4"
 
 curl -s "https://${CROMWELL}/api/workflows/v1" \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
