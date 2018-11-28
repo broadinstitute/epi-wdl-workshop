@@ -16,6 +16,8 @@ if [ "$#" -lt 3 ]; then
   echo
 fi
 
+export CLOUDSDK_CONFIG=/cromwell
+
 get_account() {
   gcloud auth list --format 'value([account])'
 }
@@ -40,4 +42,5 @@ if [ ! -f "${OPTIONS}" ]; then
   mv "options.json" "${OPTIONS}"
 fi
 
+"${SCRIPTS}/validate.sh" "${WDL}" "${INPUTS}"
 "${SCRIPTS}/submit.sh" "${OPTIONS}" "${WDL}" "${INPUTS}"
