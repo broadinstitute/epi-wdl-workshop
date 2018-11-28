@@ -21,7 +21,7 @@ require registration, so don't use them 😉).
 
 Please open command line and run
 ```
-docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow quay.io/broadinstitute/epi-cromwell \
+docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broadinstitute/epi-cromwell \
   broad-epi-wdl-workshop /example/Alignment.wdl /example/alignment.inputs.json
 ```
 Here, `broad-epi-wdl-workshop` is the name of the Google cloud project
@@ -33,12 +33,13 @@ are the paths to the WDL and workflow inputs inside the Docker
 container.
 
 While technically not required for the examples,
-`-v $PWD:/workflow` says that you're mounting the
+`-v $PWD:/workflow:ro` says that you're mounting the
 current working directory into `/workflow` directory
-inside the container. That way, you will be able to submit
+inside the container in read-only mode.
+That way, you will be able to submit
 your future workflows as follows:
 ```
-docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow quay.io/broadinstitute/epi-cromwell \
+docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broadinstitute/epi-cromwell \
   your-google-project-id workflow.wdl inputs.json
 ```
 where `workflow.wdl` and `inputs.json` are your own

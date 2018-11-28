@@ -38,8 +38,10 @@ OPTIONS="${CLOUDSDK_CONFIG}/options-${PROJECT}.json"
 SCRIPTS=$(dirname "$0")
 
 if [ ! -f "${OPTIONS}" ]; then
-  "${SCRIPTS}/setup.sh"
-  mv "options.json" "${OPTIONS}"
+  pushd "${SCRIPTS}" >/dev/null
+  ./setup.sh
+  mv options.json "${OPTIONS}"
+  popd >/dev/null
 fi
 
 "${SCRIPTS}/validate.sh" "${WDL}" "${INPUTS}"
