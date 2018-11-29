@@ -18,7 +18,7 @@ or your favorite
 require registration, so don't use them 😉).
 
 *Note:* that Windows link only works for **Windows 10 Pro & above**.
-If you have Windows 7 or Window 10 Home, you will have to install
+If you have Windows 7 or Windows 10 Home, you will have to install
 [Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) instead.
 
 ## Submit a workflow
