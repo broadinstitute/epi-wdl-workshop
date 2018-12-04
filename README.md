@@ -25,7 +25,7 @@ If you have Windows 7 or Windows 10 Home, you will have to install
 
 Please open command line and run
 ```
-docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broadinstitute/epi-cromwell \
+docker run --rm -it -v epi-cromwell:/cromwell -v "$PWD":/workflow:ro quay.io/broadinstitute/epi-cromwell \
   broad-epi-wdl-workshop /example/Alignment.wdl /example/alignment.inputs.json
 ```
 *Note:* If you're running this command **on Windows command line**,
@@ -48,7 +48,7 @@ inside the container in read-only mode.
 That way, you will be able to submit
 your future workflows as follows:
 ```
-docker run --rm -it -v epi-cromwell:/cromwell -v $PWD:/workflow:ro quay.io/broadinstitute/epi-cromwell \
+docker run --rm -it -v epi-cromwell:/cromwell -v "$PWD":/workflow:ro quay.io/broadinstitute/epi-cromwell \
   your-google-project-id workflow.wdl inputs.json
 ```
 where `workflow.wdl` and `inputs.json` are your own
