@@ -9,6 +9,18 @@ own Google cloud projects.
 
 ## Setup
 
+### Sign up for FireCloud
+
+Access to Epigenomics Cromwell is managed through
+[FireCloud](https://portal.firecloud.org/),
+so **please register there first** with your Broad email (preferred).
+
+Additionally, your email needs to be whitelisted by
+[Wintergreen team](mailto:wintergreen@broadinstitute.org) (David and Denis)
+so you are allowed to submit workflows.
+
+### Install Docker
+
 Please install Docker for
 [Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe),
 [Mac](https://download.docker.com/mac/stable/Docker.dmg),
@@ -42,7 +54,7 @@ are the paths to the WDL and workflow inputs *inside* the Docker
 container.
 
 While technically not required for the example,
-`-v $PWD:/workflow:ro` says that you're mounting the
+`-v "$PWD":/workflow:ro` says that you're mounting the
 current working directory into `/workflow` directory
 inside the container in read-only mode.
 That way, you will be able to submit
@@ -89,17 +101,12 @@ such plugins for this site.
 
 ## After the workshop
 
-You can apply the *initial* setup described above
-to any other Google project on your own.
+To start running workflows in your own project,
+you need to be an *Owner* of that project, and
+then run the command from above using your project ID.
 
-However, in order to *submit* the workflows in
-another project, your Google email or group
-needs to be **whitelisted** in FireCloud.
-
-Additionally, to access data in *Epigenomics production buckets*,
-your service account will need to be whitelisted for
-those buckets.
-
-Please [register on FireCloud](https://software.broadinstitute.org/firecloud/documentation/article?id=6816),
-and then contact [Wintergreen team](mailto:wintergreen@broadinstitute.org) (David and Denis)
-for assistance with these steps.
+Additionally, your "Cromwell pet service account"
+needs to be whitelisted by
+[Wintergreen team](mailto:wintergreen@broadinstitute.org)
+if you'd like to be able to access "production" data
+for Epigenomics from workflows in your project.
