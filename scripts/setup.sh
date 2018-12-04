@@ -26,7 +26,7 @@ BUCKET="${PROJECT}-cromwell"
 gsutil mb -l "${REGION}" "gs://${BUCKET}" 2>/dev/null || true
 gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 
-### Generate Cromwell Pet Service Account with the necessary roles and a key
+### Generate Cromwell user service account with the necessary roles and a key
 
 # Create SA if it doesn't exist
 
@@ -81,12 +81,20 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 
 ./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
+# Register SA in Sam/FireCloud (if not yet registered)
+
+register() {
+  curl -sX POST "https://${SAM}/register/user/v1" \
+    -H "Authorization: Bearer $1" >/dev/null
+}
+
+register $(./get_access_token.py "${KEY_FILE}")
+
 rm "${KEY_FILE}"
 
 ### Register user email in Sam/FireCloud (if not yet registered)
 
-curl -sX POST "https://${SAM}/register/user/v1" \
-   -H "Authorization: Bearer $(gcloud auth print-access-token)" >/dev/null
+register $(gcloud auth print-access-token)
 
 ### Return to the working directory
 

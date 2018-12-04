@@ -9,6 +9,7 @@ WORKDIR /scripts
 
 RUN apk add --no-cache \
       openjdk8-jre-base \
+      py-oauth2client \
     && \
     wget https://github.com/broadinstitute/cromwell/releases/download/${WOMTOOL_VERSION}/womtool-${WOMTOOL_VERSION}.jar \
       -O womtool.jar
