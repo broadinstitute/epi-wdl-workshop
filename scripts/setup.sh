@@ -30,16 +30,14 @@ gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 
 # Create SA if it doesn't exist
 
-username() {
-  gcloud config list --format 'value(core.account.split("@").slice(0))'
-}
+USER_EMAIL=$(gcloud config get-value account)
 
-SERVICE_ACCOUNT="cromwell-$(username)"
-
+SERVICE_ACCOUNT="${USER_EMAIL%@*}-cromwell-pet"
 SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
-  --display-name "${SERVICE_ACCOUNT}" 2>/dev/null || true
+  --display-name "Cromwell pet service account for ${USER_EMAIL}" \
+  2>/dev/null || true
 
 # Add roles and permissions required by Cromwell
 
@@ -81,21 +79,17 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 
 ./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
-# Register SA in Sam/FireCloud (if not yet registered)
+# Register SA in Sam (if not yet registered)
+# so we could add it to Epi users' FireCloud group
+# (which provides read access to prod data)
 
-register() {
-  curl -sX POST "https://${SAM}/register/user/v1" \
-    -H "Authorization: Bearer $1" >/dev/null
-}
+TOKEN=$(./get_access_token.py "${KEY_FILE}")
 
-register $(./get_access_token.py "${KEY_FILE}")
+curl -sX POST "https://${SAM}/register/user/v1" \
+  -H "Authorization: Bearer ${TOKEN}" >/dev/null
+
+### Clean up and return to the working directory
 
 rm "${KEY_FILE}"
-
-### Register user email in Sam/FireCloud (if not yet registered)
-
-register $(gcloud auth print-access-token)
-
-### Return to the working directory
 
 popd >/dev/null

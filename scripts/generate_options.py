@@ -26,13 +26,14 @@ MAX_RETRIES = 1
 
 def main():
   with open(key_file, 'r') as f:
-    key = json.dumps(json.load(f))
+    key = json.load(f)
 
   with open(OPTIONS_FILE, 'w') as out:
     options = {
       'backend': BACKEND,
       'google_project': project,
-      'user_service_account_json': key,
+      'user_service_account_json': json.dumps(key),
+      'google_compute_service_account': key['client_email'],
       'jes_gcs_root': JES_GCS_ROOT,
       'monitoring_script': MONITORING_SCRIPT,
       'final_workflow_log_dir': LOGS_DIR,
