@@ -51,10 +51,8 @@ add_role compute.instanceAdmin.v1
 add_role genomics.pipelinesRunner
 add_role storage.objectAdmin
 
-PROJECT_ID=$(gcloud projects describe "${PROJECT}" --format 'value(projectNumber)')
-
 gcloud iam service-accounts add-iam-policy-binding \
-  "${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  "${SERVICE_ACCOUNT_EMAIL}" \
   --member "serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
   --role "roles/iam.serviceAccountUser" >/dev/null
 
