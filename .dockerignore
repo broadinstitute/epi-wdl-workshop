@@ -4,5 +4,8 @@
 *.bak
 *.jar
 *.json
+*.wdl
 
 !/example/alignment.inputs.json
+!/example/hello_world.inputs.json
+!/example/*.wdl

@@ -38,30 +38,31 @@ If you have Windows 7 or Windows 10 Home, you will have to install
 Please open command line and run
 ```
 docker run --rm -it -v epi-cromwell:/cromwell -v "$PWD":/workflow:ro quay.io/broadinstitute/epi-cromwell \
-  broad-epi-wdl-workshop /example/Alignment.wdl /example/alignment.inputs.json
+  <google-project-id> /example/hello_world.wdl /example/hello_world.inputs.json
 ```
+**Replace** `<google-project-id>` with your Google project ID.
+**During** the workshop, this will be `broad-epi-wdl-workshop`.
+However, if you're following these instructions **after** the workshop,
+you will need to use your own project ID.
+
 *Note:* If you're running this command **on Windows command line**,
-please replace `$PWD` with `%cd%` and remove `\` at the end.
+additionally replace `$PWD` with `%cd%` and remove `\` at the end.
 You will also have to copy and paste each of the above lines
 into the same line.
 
-Here, `broad-epi-wdl-workshop` is the name of the Google cloud project
-for the workshop. Please change it to your own project when you
-start submitting your own workflows.
-
-`/example/Alignment.wdl` and `/example/alignment.inputs.json`
-are the paths to the WDL and workflow inputs *inside* the Docker
+`/example/hello_world.wdl` and `/example/hello_world.inputs.json`
+are the paths to the example WDL and workflow inputs *inside* the Docker
 container.
 
 While technically not required for the example,
-`-v "$PWD":/workflow:ro` says that you're mounting the
-current working directory into `/workflow` directory
-inside the container in read-only mode.
+`-v "$PWD":/workflow:ro` says that you're mounting
+*the current working directory on your command line*
+into the container path `/workflows` in read-only mode.
 That way, you will be able to submit
 your future workflows as follows:
 ```
 docker run --rm -it -v epi-cromwell:/cromwell -v "$PWD":/workflow:ro quay.io/broadinstitute/epi-cromwell \
-  your-google-project-id workflow.wdl inputs.json
+  <google-project-id> workflow.wdl inputs.json
 ```
 where `workflow.wdl` and `inputs.json` are your own
 WDL file and its inputs, located in the current
@@ -109,4 +110,4 @@ Additionally, your "Cromwell pet service account"
 needs to be whitelisted by
 [Wintergreen team](mailto:wintergreen@broadinstitute.org)
 if you'd like to be able to access "production" data
-for Epigenomics from workflows in your project.
+for Epigenomics Program from workflows in your project.
