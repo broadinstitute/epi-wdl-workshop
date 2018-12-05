@@ -35,6 +35,7 @@ WORKDIR /workflow
 
 ENV CROMWELL_HOST="cromwell.caas-prod.broadinstitute.org" \
     SAM_HOST="sam.dsde-prod.broadinstitute.org" \
+    ADMIN_GROUP="GROUP_broad-epigenomics-owners@firecloud.org" \
     GCS_REGION="us-east1"
 
 ENTRYPOINT ["/scripts/run.sh"]

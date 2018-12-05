@@ -8,9 +8,11 @@ pushd $(dirname "$0") >/dev/null
 
 ### Set up Google project
 
-PROJECT=$1
-REGION=$2
-SAM=$3
+PROJECT="$1"
+REGION="$2"
+SAM="$3"
+ADMIN_GROUP="$4"
+USER_COLLECTION="$5"
 
 enable_api() {
   gcloud services enable "$1"
@@ -31,8 +33,9 @@ gsutil cp monitoring.sh "gs://${BUCKET}/scripts/"
 # Create SA if it doesn't exist
 
 USER_EMAIL=$(gcloud config get-value account)
+USERNAME="${USER_EMAIL%@*}"
 
-SERVICE_ACCOUNT="${USER_EMAIL%@*}-cromwell-pet"
+SERVICE_ACCOUNT="${USERNAME}-cromwell-pet"
 SERVICE_ACCOUNT_EMAIL="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
 
 gcloud iam service-accounts create "${SERVICE_ACCOUNT}" \
@@ -56,7 +59,7 @@ gcloud iam service-accounts add-iam-policy-binding \
   --member "serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
   --role "roles/iam.serviceAccountUser" >/dev/null
 
-# (Re-)generate the key and populate it into options.json
+# (Re-)generate the key
 
 get_keys() {
   gcloud iam service-accounts keys list \
@@ -75,16 +78,29 @@ KEY_FILE="key.json"
 gcloud iam service-accounts keys create "${KEY_FILE}" \
   --iam-account "${SERVICE_ACCOUNT_EMAIL}"
 
-./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
-
 # Register SA in Sam (if not yet registered)
 # so we could add it to Epi users' FireCloud group
 # (which provides read access to prod data)
 
 TOKEN=$(./get_access_token.py "${KEY_FILE}")
 
-curl -sX POST "https://${SAM}/register/user/v1" \
-  -H "Authorization: Bearer ${TOKEN}" >/dev/null
+http() {
+  echo $@ 1>&2
+  curl -sH "Authorization: Bearer ${TOKEN}" -X "$@"
+  printf "\n\n" 1>&2
+}
+
+http POST "https://${SAM}/register/user/v1"
+
+# create a CaaS collection for the user (if it doesn't exist)
+http POST "https://${SAM}/api/resources/v1/workflow-collection/${USER_COLLECTION}"
+
+# add admin group to collection owners
+http PUT "https://${SAM}/api/resources/v1/workflow-collection/${USER_COLLECTION}/policies/owner/memberEmails/${ADMIN_GROUP}"
+
+# Generate options.json
+
+./generate_options.py "${PROJECT}" "${BUCKET}" "${KEY_FILE}"
 
 ### Clean up and return to the working directory
 
