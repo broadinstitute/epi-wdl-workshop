@@ -5,17 +5,21 @@ set -e
 PROJECT="$1"
 WDL="$2"
 INPUTS="$3"
+COLLECTION="$4"
 
 if [ "$#" -lt 3 ]; then
   echo
   echo "Please specify arguments in the following order:"
-  echo "  <google_project_id> <workflow.wdl> <inputs.json>"
+  echo "  <google_project_id> <workflow.wdl> <inputs.json> (<workflow_collection>)"
   echo
   echo "where <workflow.wdl> and <inputs.json>"
   echo "are either in the current working directory,"
   echo "or on the absolute path in the container"
   echo "(e.g. /example/Alignment.wdl /example/alignment.inputs.json)"
   echo
+  echo "optionally, specify <workflow_collection> if provided"
+  echo
+  exit 1
 fi
 
 export CLOUDSDK_CONFIG=/cromwell
@@ -45,4 +49,4 @@ if [ ! -f "${OPTIONS}" ]; then
 fi
 
 "${SCRIPTS_DIR}/validate.sh" "${WDL}" "${INPUTS}"
-"${SCRIPTS_DIR}/submit.sh" "${CROMWELL_HOST}" "${OPTIONS}" "${WDL}" "${INPUTS}"
+"${SCRIPTS_DIR}/submit.sh" "${CROMWELL_HOST}" "${OPTIONS}" "${WDL}" "${INPUTS}" "${COLLECTION}"
