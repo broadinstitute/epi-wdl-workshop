@@ -82,17 +82,17 @@ gcloud iam service-accounts keys create "${KEY_FILE}" \
 # so we could add it to Epi users' FireCloud group
 # (which provides read access to prod data)
 
-TOKEN=$(./get_access_token.py "${KEY_FILE}")
-
 http() {
   echo $@ 1>&2
   curl -sH "Authorization: Bearer ${TOKEN}" -X "$@"
   printf "\n\n" 1>&2
 }
 
+TOKEN=$(./get_access_token.py "${KEY_FILE}")
 http POST "https://${SAM}/register/user/v1"
 
 # create a CaaS collection for the user (if it doesn't exist)
+TOKEN=$(gcloud auth print-access-token)
 http POST "https://${SAM}/api/resources/v1/workflow-collection/${USER_COLLECTION}"
 
 # add admin group to collection owners
