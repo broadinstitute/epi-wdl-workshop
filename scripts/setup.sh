@@ -52,6 +52,7 @@ add_role() {
 
 add_role compute.instanceAdmin.v1
 add_role genomics.pipelinesRunner
+add_role serviceusage.serviceUsageConsumer
 add_role storage.objectAdmin
 
 gcloud iam service-accounts add-iam-policy-binding \
