@@ -6,6 +6,8 @@
 # The results should be stored to monitoring.log
 # in the task call's folder.
 
+apt install -y procps &>/dev/null || true
+
 mem() {
   grep ^$1 /proc/meminfo | awk '{ print $2 }'
 }
