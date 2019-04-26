@@ -18,6 +18,9 @@ mem_used() {
   echo $(( $(mem_total) - $(mem MemAvailable) ))
 }
 
+PREV_TOTAL=0
+PREV_IDLE=0
+
 cpu_used() {
   # from https://github.com/Leo-G/DevopsWiki/wiki/How-Linux-CPU-Usage-Time-and-Percentage-is-calculated
   # by Paul Colby (http://colby.id.au), no rights reserved ;)
